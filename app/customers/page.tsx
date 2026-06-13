@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useState } from "react";
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-IN").format(value);
@@ -64,47 +64,43 @@ export default function CustomersPage() {
       />
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-        {filteredCustomers.map((customer) => (
-          <div
-            key={customer.id}
-            className="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-xl">
-                {customer.name.charAt(0)}
-              </div>
+  {filteredCustomers.map((customer) => (
+    <Link
+      href={`/customers/${customer.id}`}
+      key={customer.id}
+    >
+      <div className="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer">
 
-              <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
-                Active
-              </span>
-            </div>
-
-            <h3 className="text-xl font-bold text-gray-900">
-              {customer.name}
-            </h3>
-
-            <p className="text-gray-500 mt-2">
-              📞 {customer.phone}
-            </p>
-
-            <p className="text-gray-500 mt-2">
-              Orders: {customer.orders}
-            </p>
-
-            <p className="text-green-600 font-bold text-2xl mt-4">
-  ₹{customer.revenue}
-</p>
+        <div className="flex items-center justify-between mb-4">
+          <div className="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-xl">
+            {customer.name.charAt(0)}
           </div>
-        ))}
-      </div>
 
-      {filteredCustomers.length === 0 && (
-        <div className="bg-white p-8 rounded-xl shadow text-center mt-6">
-          <p className="text-gray-500 text-lg">
-            No customers found.
-          </p>
+          <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+            Active
+          </span>
         </div>
-      )}
+
+        <h3 className="text-xl font-bold text-gray-900">
+          {customer.name}
+        </h3>
+
+        <p className="text-gray-500 mt-2">
+          📞 {customer.phone}
+        </p>
+
+        <p className="text-gray-500 mt-2">
+          Orders: {customer.orders}
+        </p>
+
+        <p className="text-green-600 font-bold text-2xl mt-4">
+          ₹{customer.revenue}
+        </p>
+
+      </div>
+    </Link>
+  ))}
+</div>
     </main>
   );
 }
