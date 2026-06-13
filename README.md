@@ -37,5 +37,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 =======
 # TimberIQ
+<<<<<<< HEAD
 AI-Powered Timber Business Management and Analytics Platform
 >>>>>>> d6ee0ca5e7c4cac2c89f2026cd9f76d2b793e987
+=======
+>>>>>>> 890070ae130dc0c2b372ca6d57f2698dbffee2f3
