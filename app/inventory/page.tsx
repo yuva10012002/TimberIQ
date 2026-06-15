@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 
 export default function InventoryPage() {
+
+
+const [editId, setEditId] = useState<number | null>(null);
 const [search, setSearch] = useState("");
 
 const [productName, setProductName] = useState("");
@@ -46,6 +49,7 @@ sellPrice: 950,
 ]);
 
 const handleAddProduct = () => {
+console.log("Button clicked");
 if (
 !productName ||
 !stock ||
@@ -56,24 +60,43 @@ alert("Please fill all fields");
 return;
 }
 
+if (editId) {
+setProducts(
+products.map((product) =>
+product.id === editId
+? {
+...product,
+name: productName,
+stock: Number(stock),
+buyPrice: Number(buyPrice),
+sellPrice: Number(sellPrice),
+}
+: product
+)
+);
+setEditId(null);
 
-const newProduct = {
-  id: Date.now(),
-  name: productName,
-  stock: Number(stock),
-  buyPrice: Number(buyPrice),
-  sellPrice: Number(sellPrice),
-};
 
-setProducts([...products, newProduct]);
+} else {
+  const newProduct = {
+    id: Date.now(),
+    name: productName,
+    stock: Number(stock),
+    buyPrice: Number(buyPrice),
+    sellPrice: Number(sellPrice),
+  };
+
+  setProducts([...products, newProduct]);
+  console.log("Current products:", products);
+   console.log("Adding product:", newProduct);
+}
 
 setProductName("");
 setStock("");
 setBuyPrice("");
 setSellPrice("");
-
-
 };
+
 
 const handleDelete = (id: number) => {
 setProducts(
@@ -81,6 +104,14 @@ products.filter(
 (product) => product.id !== id
 )
 );
+};
+const handleEdit = (product: any) => {
+setEditId(product.id);
+
+setProductName(product.name);
+setStock(product.stock.toString());
+setBuyPrice(product.buyPrice.toString());
+setSellPrice(product.sellPrice.toString());
 };
 
 const filteredProducts = products.filter(
@@ -246,11 +277,11 @@ return ( <main className="min-h-screen bg-gray-100 p-8">
     </div>
 
     <button
-      onClick={handleAddProduct}
-      className="bg-green-600 text-white px-6 py-3 rounded-xl mt-4 hover:bg-green-700"
-    >
-      Save Product
-    </button>
+  onClick={handleAddProduct}
+  className="bg-green-600 text-white px-6 py-3 rounded-xl mt-4 hover:bg-green-700"
+>
+  {editId ? "Update Product" : "Save Product"}
+</button>
 
   </div>
 
@@ -294,14 +325,24 @@ return ( <main className="min-h-screen bg-gray-100 p-8">
             product.buyPrice}
         </p>
 
-        <button
-          onClick={() =>
-            handleDelete(product.id)
-          }
-          className="bg-red-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-red-700"
-        >
-          Delete
-        </button>
+        <div className="flex gap-3 mt-4">
+
+<button
+  onClick={() => handleEdit(product)}
+  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+>
+  Edit
+</button>
+
+<button
+  onClick={() => handleDelete(product.id)}
+  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+>
+  Delete
+</button>
+
+</div>
+
 
       </div>
 
