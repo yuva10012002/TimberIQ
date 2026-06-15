@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function InventoryPage() {
 const [search, setSearch] = useState("");
@@ -9,8 +9,12 @@ const [productName, setProductName] = useState("");
 const [stock, setStock] = useState("");
 const [buyPrice, setBuyPrice] = useState("");
 const [sellPrice, setSellPrice] = useState("");
-
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-IN").format(value);
 const [products, setProducts] = useState([
+
+
+    
 {
 id: 1,
 name: "Teak Wood",
@@ -86,6 +90,24 @@ product.name
 .includes(search.toLowerCase())
 );
 
+
+
+useEffect(() => {
+  const savedProducts = localStorage.getItem("products");
+
+  if (savedProducts) {
+    setProducts(JSON.parse(savedProducts));
+  }
+}, []);
+
+useEffect(() => {
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+}, [products]);
+
+
 return ( <main className="min-h-screen bg-gray-100 p-8">
 
 ```
@@ -143,19 +165,16 @@ return ( <main className="min-h-screen bg-gray-100 p-8">
     <div className="bg-white p-6 rounded-2xl shadow">
       <h3 className="text-gray-500">
         Inventory Value
-      </h3>
-
-      <p className="text-3xl font-bold text-purple-600">
-        ₹
-        {products
-          .reduce(
-            (sum, p) =>
-              sum +
-              p.stock * p.buyPrice,
-            0
-          )
-          .toLocaleString()}
-      </p>
+      </h3> <p className="text-3xl font-bold text-purple-600">
+  ₹
+  {formatCurrency(
+    products.reduce(
+      (sum, p) =>
+        sum + p.stock * p.buyPrice,
+      0
+    )
+  )}
+</p>
     </div>
 
   </div>
